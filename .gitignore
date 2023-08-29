@@ -1,6 +1,8 @@
-target/
+# Editors files
+.idea/
 
 # Compiled class file
+target/
 *.class
 
 # Log file
