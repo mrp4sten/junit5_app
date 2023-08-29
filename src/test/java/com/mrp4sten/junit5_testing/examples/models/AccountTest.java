@@ -2,6 +2,8 @@ package com.mrp4sten.junit5_testing.examples.models;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Test;
 
 class AccountTest {
@@ -15,6 +17,20 @@ class AccountTest {
     String result = account.getPerson();
 
     assertEquals(expected, result);
+  }
+
+  @Test
+  void testAccountBalance() {
+    Account account = new Account();
+    BigDecimal balance = new BigDecimal("30000");
+    account.setBalance(balance);
+
+    BigDecimal expected = balance;
+    BigDecimal result = account.getBalance();
+    assertEquals(expected, result);
+    assertFalse(account.getBalance().compareTo(BigDecimal.ZERO) < 0);
+    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+
   }
 
 }
