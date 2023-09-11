@@ -32,6 +32,11 @@ public class Account {
 
   @Override
   public boolean equals(Object obj) {
+
+    if (obj == null || this.getClass() != obj.getClass()) {
+      return false;
+    }
+
     Account account = (Account) obj;
     if (!(obj instanceof Account)) {
       return false;
@@ -41,6 +46,11 @@ public class Account {
       return false;
     }
     return this.person.equals(account.getPerson()) && this.balance.equals(account.getBalance());
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
   }
 
 }
