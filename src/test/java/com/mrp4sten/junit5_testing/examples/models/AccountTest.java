@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 
+import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceException;
+
 class AccountTest {
 
   @Test
@@ -64,6 +66,21 @@ class AccountTest {
     assertEquals(1100, account.getBalance().intValue());
     assertEquals("1100.12345", account.getBalance().toPlainString());
 
+  }
+
+  @Test
+  void testInsufficentBalanceException() {
+    Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
+    BigDecimal charge = new BigDecimal("1500");
+
+    Exception exception = assertThrows(InsufficientBalanceException.class, () -> {
+      account.debit(charge);
+    });
+
+    String current = exception.getMessage();
+    String expected = "Insufficient Balance";
+
+    assertEquals(expected, current);
   }
 
 }

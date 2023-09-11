@@ -2,6 +2,8 @@ package com.mrp4sten.junit5_testing.examples.models;
 
 import java.math.BigDecimal;
 
+import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceException;
+
 public class Account {
   private String person;
   private BigDecimal balance;
@@ -31,7 +33,12 @@ public class Account {
   }
 
   public void debit(BigDecimal amount) {
-    this.balance = this.balance.subtract(amount);
+    BigDecimal newBalance = this.balance.subtract(amount);
+    if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+      throw new InsufficientBalanceException("Insufficient Balance");
+    }
+
+    this.balance = newBalance;
   }
 
   public void credit(BigDecimal amount) {
