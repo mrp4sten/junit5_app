@@ -33,4 +33,15 @@ class AccountTest {
 
   }
 
+  @Test
+  void testReferenceAccount() {
+    Account account = new Account("Jhon Doe", new BigDecimal("8900.9997"));
+    Account accountTwo = new Account("Jhon Doe", new BigDecimal("8900.9997"));
+
+    /** To validate instance */
+    // assertNotEquals(accountTwo, account);
+
+    assertEquals(accountTwo, account);
+  }
+
 }

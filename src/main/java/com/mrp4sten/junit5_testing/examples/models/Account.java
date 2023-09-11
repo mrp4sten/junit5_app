@@ -6,6 +6,14 @@ public class Account {
   private String person;
   private BigDecimal balance;
 
+  public Account() {
+  }
+
+  public Account(String person, BigDecimal balance) {
+    this.person = person;
+    this.balance = balance;
+  }
+
   public String getPerson() {
     return person;
   }
@@ -20,6 +28,19 @@ public class Account {
 
   public void setBalance(BigDecimal balance) {
     this.balance = balance;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    Account account = (Account) obj;
+    if (!(obj instanceof Account)) {
+      return false;
+    }
+
+    if (this.person == null || this.balance == null) {
+      return false;
+    }
+    return this.person.equals(account.getPerson()) && this.balance.equals(account.getBalance());
   }
 
 }
