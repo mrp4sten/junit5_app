@@ -30,6 +30,14 @@ public class Account {
     this.balance = balance;
   }
 
+  public void debit(BigDecimal amount) {
+    this.balance = this.balance.subtract(amount);
+  }
+
+  public void credit(BigDecimal amount) {
+    this.balance = this.balance.add(amount);
+  }
+
   @Override
   public boolean equals(Object obj) {
 

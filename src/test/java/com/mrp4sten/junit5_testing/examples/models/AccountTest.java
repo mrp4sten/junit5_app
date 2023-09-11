@@ -44,4 +44,26 @@ class AccountTest {
     assertEquals(accountTwo, account);
   }
 
+  @Test
+  void testDebitAccount() {
+    Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
+    account.debit(new BigDecimal("100"));
+
+    assertNotNull(account.getBalance());
+    assertEquals(900, account.getBalance().intValue());
+    assertEquals("900.12345", account.getBalance().toPlainString());
+
+  }
+
+  @Test
+  void testCreditAccount() {
+    Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
+    account.credit(new BigDecimal("100"));
+
+    assertNotNull(account.getBalance());
+    assertEquals(1100, account.getBalance().intValue());
+    assertEquals("1100.12345", account.getBalance().toPlainString());
+
+  }
+
 }
