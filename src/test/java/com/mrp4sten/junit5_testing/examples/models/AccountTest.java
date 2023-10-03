@@ -84,7 +84,7 @@ class AccountTest {
   }
 
   @Test
-  void transferBalanceAccount() {
+  void testTransferBalanceAccount() {
     Account accountOne = new Account("Jhon Doe", new BigDecimal("2500"));
     Account accountTwo = new Account("Jhon Snow", new BigDecimal("1500.8989"));
 
@@ -94,6 +94,27 @@ class AccountTest {
     assertEquals("1000.8989", accountTwo.getBalance().toPlainString());
     assertEquals("3000", accountOne.getBalance().toPlainString());
 
+  }
+
+  @Test
+  void testBankAccountRelationship() {
+    Account accountOne = new Account("Jhon Doe", new BigDecimal("2500"));
+    Account accountTwo = new Account("Jhon Snow", new BigDecimal("1500.8989"));
+
+    Bank bank = new Bank();
+    bank.addAccount(accountOne);
+    bank.addAccount(accountTwo);
+
+    bank.setName("State Bank");
+    bank.transfer(accountTwo, accountOne, new BigDecimal(500));
+    assertEquals("1000.8989", accountTwo.getBalance().toPlainString());
+    assertEquals("3000", accountOne.getBalance().toPlainString());
+
+    assertEquals(2, bank.getAccounts().size());
+    assertEquals("State Bank", accountOne.getBank().getName());
+    assertEquals("State Bank", accountTwo.getBank().getName());
+    assertTrue(bank.getAccounts().stream()
+        .anyMatch(account -> account.getPerson().equals("Jhon Snow")));
   }
 
 }

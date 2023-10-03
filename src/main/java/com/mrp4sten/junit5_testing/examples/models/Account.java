@@ -7,6 +7,7 @@ import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceExcept
 public class Account {
   private String person;
   private BigDecimal balance;
+  private Bank bank;
 
   public Account() {
   }
@@ -30,6 +31,14 @@ public class Account {
 
   public void setBalance(BigDecimal balance) {
     this.balance = balance;
+  }
+
+  public Bank getBank() {
+    return bank;
+  }
+
+  public void setBank(Bank bank) {
+    this.bank = bank;
   }
 
   public void debit(BigDecimal amount) {
