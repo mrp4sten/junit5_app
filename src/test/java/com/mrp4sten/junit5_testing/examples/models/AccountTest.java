@@ -79,7 +79,7 @@ class AccountTest {
 
   @Test
   @DisplayName("Testing exception from Insufficient balance")
-  void testInsufficentBalanceException() {
+  void testInsufficientBalanceException() {
     Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
     BigDecimal charge = new BigDecimal("1500");
 
