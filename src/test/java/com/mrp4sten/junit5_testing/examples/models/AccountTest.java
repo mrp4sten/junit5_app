@@ -18,7 +18,8 @@ class AccountTest {
     String expected = "Mauricio";
     String result = account.getPerson();
 
-    assertEquals(expected, result);
+    assertEquals(expected, result,
+        () -> "The account name is not correct. Value expected: " + expected + " But the value is: " + result);
   }
 
   @Test
