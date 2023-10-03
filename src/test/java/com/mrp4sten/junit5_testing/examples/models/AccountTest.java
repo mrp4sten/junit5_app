@@ -107,14 +107,27 @@ class AccountTest {
 
     bank.setName("State Bank");
     bank.transfer(accountTwo, accountOne, new BigDecimal(500));
-    assertEquals("1000.8989", accountTwo.getBalance().toPlainString());
-    assertEquals("3000", accountOne.getBalance().toPlainString());
 
-    assertEquals(2, bank.getAccounts().size());
-    assertEquals("State Bank", accountOne.getBank().getName());
-    assertEquals("State Bank", accountTwo.getBank().getName());
-    assertTrue(bank.getAccounts().stream()
-        .anyMatch(account -> account.getPerson().equals("Jhon Snow")));
+    assertAll(() -> {
+      assertEquals("1000.8989", accountTwo.getBalance().toPlainString());
+    },
+        () -> {
+          assertEquals("3000", accountOne.getBalance().toPlainString());
+        },
+        () -> {
+          assertEquals(2, bank.getAccounts().size());
+        },
+        () -> {
+          assertEquals("State Bank", accountOne.getBank().getName());
+        },
+        () -> {
+          assertEquals("State Bank", accountTwo.getBank().getName());
+        },
+        () -> {
+          assertTrue(bank.getAccounts().stream()
+              .anyMatch(account -> account.getPerson().equals("Jhon Snow")));
+        });
+
   }
 
 }
