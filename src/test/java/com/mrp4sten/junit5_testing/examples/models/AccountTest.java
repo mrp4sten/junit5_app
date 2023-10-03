@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceException;
@@ -11,6 +13,8 @@ import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceExcept
 class AccountTest {
 
   @Test
+  @Disabled("Thats example of using Disabled")
+  @DisplayName("Testing the account name")
   void testAccountName() {
     Account account = new Account();
     account.setPerson("Mauricio");
@@ -23,6 +27,7 @@ class AccountTest {
   }
 
   @Test
+  @DisplayName("Testing account balance")
   void testAccountBalance() {
     Account account = new Account();
     BigDecimal balance = new BigDecimal("30000");
@@ -37,6 +42,7 @@ class AccountTest {
   }
 
   @Test
+  @DisplayName("Testing reference account")
   void testReferenceAccount() {
     Account account = new Account("Jhon Doe", new BigDecimal("8900.9997"));
     Account accountTwo = new Account("Jhon Doe", new BigDecimal("8900.9997"));
@@ -48,6 +54,7 @@ class AccountTest {
   }
 
   @Test
+  @DisplayName("Testing debit from account")
   void testDebitAccount() {
     Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
     account.debit(new BigDecimal("100"));
@@ -59,6 +66,7 @@ class AccountTest {
   }
 
   @Test
+  @DisplayName("Testing credit from account")
   void testCreditAccount() {
     Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
     account.credit(new BigDecimal("100"));
@@ -70,6 +78,7 @@ class AccountTest {
   }
 
   @Test
+  @DisplayName("Testing exception from Insufficient balance")
   void testInsufficentBalanceException() {
     Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
     BigDecimal charge = new BigDecimal("1500");
@@ -85,6 +94,7 @@ class AccountTest {
   }
 
   @Test
+  @DisplayName("Testing transfer")
   void testTransferBalanceAccount() {
     Account accountOne = new Account("Jhon Doe", new BigDecimal("2500"));
     Account accountTwo = new Account("Jhon Snow", new BigDecimal("1500.8989"));
@@ -98,6 +108,7 @@ class AccountTest {
   }
 
   @Test
+  @DisplayName("Testing bank account relationship")
   void testBankAccountRelationship() {
     Account accountOne = new Account("Jhon Doe", new BigDecimal("2500"));
     Account accountTwo = new Account("Jhon Snow", new BigDecimal("1500.8989"));
