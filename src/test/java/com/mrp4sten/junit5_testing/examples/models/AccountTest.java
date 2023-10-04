@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +27,16 @@ class AccountTest {
   @AfterEach
   void tearDown() {
     System.out.println("This is an After each method");
+  }
+
+  @BeforeAll
+  static void beforeAll() {
+    System.out.println("This method only execute once before all");
+  }
+
+  @AfterAll
+  static void afterAll() {
+    System.out.println("This method only execute once after all");
   }
 
   @Test
