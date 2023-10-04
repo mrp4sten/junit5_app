@@ -11,6 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnJre;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.api.condition.OS;
 
 import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceException;
 
@@ -166,4 +172,33 @@ class AccountTest {
 
   }
 
+  @Test
+  @EnabledOnOs(OS.WINDOWS)
+  void testOnlyOnWindows() {
+    System.out.println("Test only on Windows");
+  }
+
+  @Test
+  @DisabledOnOs(OS.WINDOWS)
+  void testNoOnWindows() {
+    System.out.println("Test no on Windows");
+  }
+
+  @Test
+  @EnabledOnOs({ OS.LINUX, OS.MAC })
+  void testOnlyOnLinux() {
+    System.out.println("Test only on Linux");
+  }
+
+  @Test
+  @EnabledOnJre(JRE.JAVA_8)
+  void testOnlyOnJre8() {
+    System.out.println("Test only on Jre 8");
+  }
+
+  @Test
+  @DisabledOnJre(JRE.JAVA_22)
+  void testNoOnJre22() {
+    System.out.println("Test no on Jre 22");
+  }
 }
