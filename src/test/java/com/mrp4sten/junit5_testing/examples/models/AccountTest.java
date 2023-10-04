@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,19 @@ import org.junit.jupiter.api.Test;
 import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceException;
 
 class AccountTest {
+
+  private Account account;
+
+  @BeforeEach
+  void initMethod() {
+    this.account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
+    System.out.println("This is BeforeEach method");
+  }
+
+  @AfterEach
+  void tearDown() {
+    System.out.println("This is an After each method");
+  }
 
   @Test
   @Disabled("Thats example of using Disabled")
@@ -44,7 +59,7 @@ class AccountTest {
   @Test
   @DisplayName("Testing reference account")
   void testReferenceAccount() {
-    Account account = new Account("Jhon Doe", new BigDecimal("8900.9997"));
+    account = new Account("Jhon Doe", new BigDecimal("8900.9997"));
     Account accountTwo = new Account("Jhon Doe", new BigDecimal("8900.9997"));
 
     /** To validate instance */
@@ -56,7 +71,6 @@ class AccountTest {
   @Test
   @DisplayName("Testing debit from account")
   void testDebitAccount() {
-    Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
     account.debit(new BigDecimal("100"));
 
     assertNotNull(account.getBalance());
@@ -68,7 +82,6 @@ class AccountTest {
   @Test
   @DisplayName("Testing credit from account")
   void testCreditAccount() {
-    Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
     account.credit(new BigDecimal("100"));
 
     assertNotNull(account.getBalance());
@@ -80,7 +93,6 @@ class AccountTest {
   @Test
   @DisplayName("Testing exception from Insufficient balance")
   void testInsufficientBalanceException() {
-    Account account = new Account("Jhon Doe", new BigDecimal("1000.12345"));
     BigDecimal charge = new BigDecimal("1500");
 
     Exception exception = assertThrows(InsufficientBalanceException.class, () -> {
