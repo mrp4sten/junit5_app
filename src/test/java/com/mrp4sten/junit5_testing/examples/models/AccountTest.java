@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledOnJre;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
@@ -200,5 +201,22 @@ class AccountTest {
   @DisabledOnJre(JRE.JAVA_22)
   void testNoOnJre22() {
     System.out.println("Test no on Jre 22");
+  }
+
+  @Test
+  void printEnvVars() {
+    System.getenv().forEach((k, v) -> System.out.println(k + ":" + v));
+  }
+
+  @Test
+  @EnabledIfEnvironmentVariable(named = "HOME", matches = "/home/mrp4sten")
+  void testHome() {
+
+  }
+
+  @Test
+  @EnabledIfEnvironmentVariable(named = "ZSH", matches = "/home/mrp4sten/.oh-my-zsh")
+  void testZsh() {
+
   }
 }
