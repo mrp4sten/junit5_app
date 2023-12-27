@@ -254,19 +254,20 @@ class AccountTest {
       assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
     }
 
-    @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
-    @MethodSource("amountList")
-    void parameterizedMethodSourceTestDebitAccount(String amount) {
-      account.debit(new BigDecimal(amount));
+  }
 
-      assertNotNull(account.getBalance());
-      assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
-    }
+  @Tag("parameterized")
+  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+  @MethodSource("amountList")
+  void parameterizedMethodSourceTestDebitAccount(String amount) {
+    account.debit(new BigDecimal(amount));
 
-    List<String> amountList() {
-      return Arrays.asList("100", "200", "300", "500", "700", "1000");
-    }
+    assertNotNull(account.getBalance());
+    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+  }
 
+  static List<String> amountList() {
+    return Arrays.asList("100", "200", "300", "500", "700", "1000");
   }
 
   @Tag("os")
