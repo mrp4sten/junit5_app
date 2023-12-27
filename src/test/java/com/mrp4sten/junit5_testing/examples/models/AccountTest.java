@@ -1,6 +1,13 @@
 package com.mrp4sten.junit5_testing.examples.models;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 import java.math.BigDecimal;
 
@@ -217,6 +224,40 @@ class AccountTest {
   @Test
   @EnabledIfEnvironmentVariable(named = "ZSH", matches = "/home/mrp4sten/.oh-my-zsh")
   void testZsh() {
+
+  }
+
+  @Test
+  @DisplayName("Testing account balance dev")
+  void testAccountBalanceDev() {
+    assumeTrue(System.getProperty("ENV").equals("dev"));
+
+    Account account = new Account();
+    BigDecimal balance = new BigDecimal("30000");
+    account.setBalance(balance);
+
+    BigDecimal expected = balance;
+    BigDecimal result = account.getBalance();
+    assertEquals(expected, result);
+    assertFalse(account.getBalance().compareTo(BigDecimal.ZERO) < 0);
+    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+
+  }
+
+  @Test
+  @DisplayName("Testing account balance dev 2")
+  void testAccountBalanceDev2() {
+    assumingThat(System.getProperty("ENV").equals("dev"), () -> {
+      Account account = new Account();
+      BigDecimal balance = new BigDecimal("30000");
+      account.setBalance(balance);
+
+      BigDecimal expected = balance;
+      BigDecimal result = account.getBalance();
+      assertEquals(expected, result);
+      assertFalse(account.getBalance().compareTo(BigDecimal.ZERO) < 0);
+      assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    });
 
   }
 }
