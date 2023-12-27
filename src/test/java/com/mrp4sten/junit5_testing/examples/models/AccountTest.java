@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -29,6 +31,9 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceException;
@@ -202,11 +207,43 @@ class AccountTest {
 
   @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
   @ValueSource(strings = { "100", "200", "300", "500", "700", "1000" })
-  void parameterizedTestDebitAccount(String amount) {
+  void parameterizedValueSourceTestDebitAccount(String amount) {
     account.debit(new BigDecimal(amount));
 
     assertNotNull(account.getBalance());
     assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+  }
+
+  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+  @CsvSource({ "1,100", "2,200", "3,300", "4,500", "5,700", "6,1000" })
+  void parameterizedCsvSourceTestDebitAccount(String index, String amount) {
+    System.out.println("Index: " + index + " - Amount: " + amount);
+    account.debit(new BigDecimal(amount));
+
+    assertNotNull(account.getBalance());
+    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+  }
+
+  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+  @CsvFileSource(resources = "/data.csv")
+  void parameterizedCsvFileSourceTestDebitAccount(String amount) {
+    account.debit(new BigDecimal(amount));
+
+    assertNotNull(account.getBalance());
+    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+  }
+
+  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+  @MethodSource("amountList")
+  void parameterizedMethodSourceTestDebitAccount(String amount) {
+    account.debit(new BigDecimal(amount));
+
+    assertNotNull(account.getBalance());
+    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+  }
+
+  static List<String> amountList() {
+    return Arrays.asList("100", "200", "300", "500", "700", "1000");
   }
 
   @Nested
