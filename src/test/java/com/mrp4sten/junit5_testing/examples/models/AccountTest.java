@@ -17,13 +17,14 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -66,9 +67,10 @@ class AccountTest {
 
   @Test
   @Tag("account")
-  @Disabled("Thats example of using Disabled")
   @DisplayName("Testing the account name")
-  void testAccountName() {
+  void testAccountName(TestInfo info, TestReporter reporter) {
+    System.out.println("Executing: " + info.getDisplayName() + " with tags: " + info.getTags());
+    reporter.publishEntry("Start", "Executing: " + info.getDisplayName() + " with tags: " + info.getTags());
     Account account = new Account();
     account.setPerson("Mauricio");
 
