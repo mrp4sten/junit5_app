@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -180,74 +181,70 @@ class AccountTest {
 
   }
 
-  @Test
-  @EnabledOnOs(OS.WINDOWS)
-  void testOnlyOnWindows() {
-    System.out.println("Test only on Windows");
+  @Nested
+  @DisplayName("Testing for OS")
+  class OSTest {
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    void testOnlyOnWindows() {
+      System.out.println("Test only on Windows");
+    }
+
+    @Test
+    @DisabledOnOs(OS.WINDOWS)
+    void testNoOnWindows() {
+      System.out.println("Test no on Windows");
+    }
+
+    @Test
+    @EnabledOnOs({ OS.LINUX, OS.MAC })
+    void testOnlyOnLinux() {
+      System.out.println("Test only on Linux");
+    }
   }
 
-  @Test
-  @DisabledOnOs(OS.WINDOWS)
-  void testNoOnWindows() {
-    System.out.println("Test no on Windows");
-  }
+  @Nested
+  @DisplayName("Testing for Java Version")
+  class JavaVersionTest {
+    @Test
+    @EnabledOnJre(JRE.JAVA_8)
+    void testOnlyOnJre8() {
+      System.out.println("Test only on Jre 8");
+    }
 
-  @Test
-  @EnabledOnOs({ OS.LINUX, OS.MAC })
-  void testOnlyOnLinux() {
-    System.out.println("Test only on Linux");
-  }
-
-  @Test
-  @EnabledOnJre(JRE.JAVA_8)
-  void testOnlyOnJre8() {
-    System.out.println("Test only on Jre 8");
-  }
-
-  @Test
-  @DisabledOnJre(JRE.JAVA_22)
-  void testNoOnJre22() {
-    System.out.println("Test no on Jre 22");
-  }
-
-  @Test
-  void printEnvVars() {
-    System.getenv().forEach((k, v) -> System.out.println(k + ":" + v));
-  }
-
-  @Test
-  @EnabledIfEnvironmentVariable(named = "HOME", matches = "/home/mrp4sten")
-  void testHome() {
-
-  }
-
-  @Test
-  @EnabledIfEnvironmentVariable(named = "ZSH", matches = "/home/mrp4sten/.oh-my-zsh")
-  void testZsh() {
+    @Test
+    @DisabledOnJre(JRE.JAVA_22)
+    void testNoOnJre22() {
+      System.out.println("Test no on Jre 22");
+    }
 
   }
 
-  @Test
-  @DisplayName("Testing account balance dev")
-  void testAccountBalanceDev() {
-    assumeTrue(System.getProperty("ENV").equals("dev"));
+  @Nested
+  @DisplayName("Testing for System and Environment Properties")
+  class SystemAndEnvProperiesTest {
+    @Test
+    void printEnvVars() {
+      System.getenv().forEach((k, v) -> System.out.println(k + ":" + v));
+    }
 
-    Account account = new Account();
-    BigDecimal balance = new BigDecimal("30000");
-    account.setBalance(balance);
+    @Test
+    @EnabledIfEnvironmentVariable(named = "HOME", matches = "/home/mrp4sten")
+    void testHome() {
 
-    BigDecimal expected = balance;
-    BigDecimal result = account.getBalance();
-    assertEquals(expected, result);
-    assertFalse(account.getBalance().compareTo(BigDecimal.ZERO) < 0);
-    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    }
 
-  }
+    @Test
+    @EnabledIfEnvironmentVariable(named = "ZSH", matches = "/home/mrp4sten/.oh-my-zsh")
+    void testZsh() {
 
-  @Test
-  @DisplayName("Testing account balance dev 2")
-  void testAccountBalanceDev2() {
-    assumingThat(System.getProperty("ENV").equals("dev"), () -> {
+    }
+
+    @Test
+    @DisplayName("Testing account balance dev")
+    void testAccountBalanceDev() {
+      assumeTrue(System.getProperty("ENV").equals("dev"));
+
       Account account = new Account();
       BigDecimal balance = new BigDecimal("30000");
       account.setBalance(balance);
@@ -257,7 +254,24 @@ class AccountTest {
       assertEquals(expected, result);
       assertFalse(account.getBalance().compareTo(BigDecimal.ZERO) < 0);
       assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
-    });
 
+    }
+
+    @Test
+    @DisplayName("Testing account balance dev 2")
+    void testAccountBalanceDev2() {
+      assumingThat(System.getProperty("ENV").equals("dev"), () -> {
+        Account account = new Account();
+        BigDecimal balance = new BigDecimal("30000");
+        account.setBalance(balance);
+
+        BigDecimal expected = balance;
+        BigDecimal result = account.getBalance();
+        assertEquals(expected, result);
+        assertFalse(account.getBalance().compareTo(BigDecimal.ZERO) < 0);
+        assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+      });
+
+    }
   }
 }
