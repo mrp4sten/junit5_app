@@ -257,7 +257,7 @@ class AccountTest {
       assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
     }
 
-    static List<String> amountList() {
+    List<String> amountList() {
       return Arrays.asList("100", "200", "300", "500", "700", "1000");
     }
 
