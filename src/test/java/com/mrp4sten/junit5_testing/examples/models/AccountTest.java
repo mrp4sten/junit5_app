@@ -18,6 +18,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -178,6 +180,21 @@ class AccountTest {
           assertTrue(bank.getAccounts().stream()
               .anyMatch(account -> account.getPerson().equals("Jhon Snow")));
         });
+
+  }
+
+  // @RepeatedTest(5)
+  @DisplayName("Testing debit from account with RepeatedTest")
+  @RepeatedTest(value = 5, name = "{displayName} - Repetition number {currentRepetition} of {totalRepetitions}")
+  void repeatedTestDebitAccount(RepetitionInfo info) {
+    if (info.getCurrentRepetition() == 3) {
+      System.out.println("This is the third repetition");
+    }
+    account.debit(new BigDecimal("100"));
+
+    assertNotNull(account.getBalance());
+    assertEquals(900, account.getBalance().intValue());
+    assertEquals("900.12345", account.getBalance().toPlainString());
 
   }
 
