@@ -1,0 +1,7 @@
+{
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.test.config": {
+    "name": "Run all tests",
+    "vmArgs": ["-DENV=dev"]
+  }
+}
