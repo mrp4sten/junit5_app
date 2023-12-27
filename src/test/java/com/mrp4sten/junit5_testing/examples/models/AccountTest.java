@@ -28,6 +28,8 @@ import org.junit.jupiter.api.condition.EnabledOnJre;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.mrp4sten.junit5_testing.examples.exceptions.InsufficientBalanceException;
 
@@ -196,6 +198,15 @@ class AccountTest {
     assertEquals(900, account.getBalance().intValue());
     assertEquals("900.12345", account.getBalance().toPlainString());
 
+  }
+
+  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+  @ValueSource(strings = { "100", "200", "300", "500", "700", "1000" })
+  void parameterizedTestDebitAccount(String amount) {
+    account.debit(new BigDecimal(amount));
+
+    assertNotNull(account.getBalance());
+    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
   }
 
   @Nested
