@@ -22,6 +22,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -64,6 +65,7 @@ class AccountTest {
   }
 
   @Test
+  @Tag("account")
   @Disabled("Thats example of using Disabled")
   @DisplayName("Testing the account name")
   void testAccountName() {
@@ -78,6 +80,7 @@ class AccountTest {
   }
 
   @Test
+  @Tag("account")
   @DisplayName("Testing account balance")
   void testAccountBalance() {
     Account account = new Account();
@@ -93,6 +96,7 @@ class AccountTest {
   }
 
   @Test
+  @Tag("account")
   @DisplayName("Testing reference account")
   void testReferenceAccount() {
     account = new Account("Jhon Doe", new BigDecimal("8900.9997"));
@@ -105,6 +109,7 @@ class AccountTest {
   }
 
   @Test
+  @Tag("account")
   @DisplayName("Testing debit from account")
   void testDebitAccount() {
     account.debit(new BigDecimal("100"));
@@ -116,6 +121,7 @@ class AccountTest {
   }
 
   @Test
+  @Tag("account")
   @DisplayName("Testing credit from account")
   void testCreditAccount() {
     account.credit(new BigDecimal("100"));
@@ -127,6 +133,7 @@ class AccountTest {
   }
 
   @Test
+  @Tag("exception")
   @DisplayName("Testing exception from Insufficient balance")
   void testInsufficientBalanceException() {
     BigDecimal charge = new BigDecimal("1500");
@@ -142,6 +149,7 @@ class AccountTest {
   }
 
   @Test
+  @Tag("account")
   @DisplayName("Testing transfer")
   void testTransferBalanceAccount() {
     Account accountOne = new Account("Jhon Doe", new BigDecimal("2500"));
@@ -156,6 +164,7 @@ class AccountTest {
   }
 
   @Test
+  @Tag("account")
   @DisplayName("Testing bank account relationship")
   void testBankAccountRelationship() {
     Account accountOne = new Account("Jhon Doe", new BigDecimal("2500"));
@@ -191,6 +200,7 @@ class AccountTest {
   }
 
   // @RepeatedTest(5)
+  @Tag("repeated")
   @DisplayName("Testing debit from account with RepeatedTest")
   @RepeatedTest(value = 5, name = "{displayName} - Repetition number {currentRepetition} of {totalRepetitions}")
   void repeatedTestDebitAccount(RepetitionInfo info) {
@@ -205,47 +215,55 @@ class AccountTest {
 
   }
 
-  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
-  @ValueSource(strings = { "100", "200", "300", "500", "700", "1000" })
-  void parameterizedValueSourceTestDebitAccount(String amount) {
-    account.debit(new BigDecimal(amount));
+  @Tag("parameterized")
+  @Nested
+  @DisplayName("Testing debit from account with ParameterizedTest")
+  class ParameterizedTesting {
 
-    assertNotNull(account.getBalance());
-    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+    @ValueSource(strings = { "100", "200", "300", "500", "700", "1000" })
+    void parameterizedValueSourceTestDebitAccount(String amount) {
+      account.debit(new BigDecimal(amount));
+
+      assertNotNull(account.getBalance());
+      assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+    @CsvSource({ "1,100", "2,200", "3,300", "4,500", "5,700", "6,1000" })
+    void parameterizedCsvSourceTestDebitAccount(String index, String amount) {
+      System.out.println("Index: " + index + " - Amount: " + amount);
+      account.debit(new BigDecimal(amount));
+
+      assertNotNull(account.getBalance());
+      assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+    @CsvFileSource(resources = "/data.csv")
+    void parameterizedCsvFileSourceTestDebitAccount(String amount) {
+      account.debit(new BigDecimal(amount));
+
+      assertNotNull(account.getBalance());
+      assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
+    @MethodSource("amountList")
+    void parameterizedMethodSourceTestDebitAccount(String amount) {
+      account.debit(new BigDecimal(amount));
+
+      assertNotNull(account.getBalance());
+      assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    static List<String> amountList() {
+      return Arrays.asList("100", "200", "300", "500", "700", "1000");
+    }
+
   }
 
-  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
-  @CsvSource({ "1,100", "2,200", "3,300", "4,500", "5,700", "6,1000" })
-  void parameterizedCsvSourceTestDebitAccount(String index, String amount) {
-    System.out.println("Index: " + index + " - Amount: " + amount);
-    account.debit(new BigDecimal(amount));
-
-    assertNotNull(account.getBalance());
-    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
-  }
-
-  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
-  @CsvFileSource(resources = "/data.csv")
-  void parameterizedCsvFileSourceTestDebitAccount(String amount) {
-    account.debit(new BigDecimal(amount));
-
-    assertNotNull(account.getBalance());
-    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
-  }
-
-  @ParameterizedTest(name = "Testing debit from account with ParameterizedTest with value {0} - {argumentsWithNames}")
-  @MethodSource("amountList")
-  void parameterizedMethodSourceTestDebitAccount(String amount) {
-    account.debit(new BigDecimal(amount));
-
-    assertNotNull(account.getBalance());
-    assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
-  }
-
-  static List<String> amountList() {
-    return Arrays.asList("100", "200", "300", "500", "700", "1000");
-  }
-
+  @Tag("os")
   @Nested
   @DisplayName("Testing for OS")
   class OSTest {
@@ -268,6 +286,7 @@ class AccountTest {
     }
   }
 
+  @Tag("java")
   @Nested
   @DisplayName("Testing for Java Version")
   class JavaVersionTest {
@@ -285,6 +304,7 @@ class AccountTest {
 
   }
 
+  @Tag("environment")
   @Nested
   @DisplayName("Testing for System and Environment Properties")
   class SystemAndEnvProperiesTest {
